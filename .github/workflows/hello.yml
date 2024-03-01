@@ -34,8 +34,8 @@ jobs:
 
       - name: Get the diff
         # get the diff using Git
-        # git fetch origin main:main
         run: |
+          git fetch origin main:main
           MERGE_BASE=$(git merge-base main ${{ github.sha }})
           DIFF=$(git diff --name-only $MERGE_BASE ${{ github.sha }} | tr '\n' ' ')
           echo "DIFF=$DIFF" >> $GITHUB_ENV
