@@ -37,10 +37,10 @@ jobs:
         run: |
           git fetch origin main:main
           MERGE_BASE=$(git merge-base main ${{ github.sha }})
-          git diff --name-only $MERGE_BASE ${{ github.sha }}
+          DIFF=$(git diff --name-only $MERGE_BASE ${{ github.sha }} | tr '\n' ' ')
+          echo "DIFF=$DIFF" >> $GITHUB_ENV
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo The diff we got is $DIFF
