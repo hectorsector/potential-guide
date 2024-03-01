@@ -33,7 +33,6 @@ jobs:
       - name: Get the diff
         # get the diff using Git
         run: |
-          git fetch origin main
           MERGE_BASE=$(git merge-base main ${{ github.sha }})
           git diff --name-only $MERGE_BASE ${{ github.sha }}
 
