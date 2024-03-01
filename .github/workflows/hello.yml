@@ -28,19 +28,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@3f54ebb830831fc121d3263c1857cfbdc310cdb9 # v42.0.4
+        with:
+          json: true
+          escape_json: false
+          # No need to escape the file names because we make the output of
+          # tj-actions/changed-files be set as an environment variable. Not
+          # as a direct input to the line of bash that uses it.
+          # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+          safe_output: false
+          files: 'content/**'
+          # Necessary so we can know what the old name was when a
+          # content file was renamed.
+          output_renamed_files_as_deleted_and_added: true
 
-      - name: Get the diff
-        # get the diff using Git
-        run: |
-          git fetch origin main:main
-          MERGE_BASE=$(git merge-base main ${{ github.sha }})
-          DIFF=$(git diff --name-only $MERGE_BASE ${{ github.sha }} | tr '\n' ' ')
-          echo "DIFF=$DIFF" >> $GITHUB_ENV
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo The diff we got is $DIFF
+      - name: Link check all pages (internal links only)
+        env:
+          LEVEL: 'critical'
+          CHECK_EXTERNAL_LINKS: false
+          CREATE_REPORT: false
+          # Not strictly necessary bit it makes warmServer() a bit faster
+          # because it only bothers with English to begin with, which
+          # we're filtering on anyway once the list of all pages has
+          # been loaded.
+          ENABLED_LANGUAGES: en
+          FAIL_ON_FLAW: true
+          FILES_CHANGED: ${{ steps.changed-files.outputs.modified_files }}
+        run: node src/links/scripts/rendered-content-link-checker.js
