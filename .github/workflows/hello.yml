@@ -39,7 +39,7 @@ jobs:
           # as a direct input to the line of bash that uses it.
           # See https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
           safe_output: false
-          files: 'content/**'
+          # files: 'content/**'
           # Necessary so we can know what the old name was when a
           # content file was renamed.
           output_renamed_files_as_deleted_and_added: true
