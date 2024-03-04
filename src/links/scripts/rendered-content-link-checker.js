@@ -20,7 +20,7 @@
 // import { getEnvInputs, boolEnvVar } from '#src/workflows/get-env-inputs.js'
 // import { debugTimeEnd, debugTimeStart } from './debug-time-taken.js'
 // import { uploadArtifact as uploadArtifactLib } from './upload-artifact.js'
-import github from '#src/workflows/github.js'
+// import github from '#src/workflows/github.js'
 // import { getActionContext } from '#src/workflows/action-context.js'
 // import { createMinimalProcessor } from '#src/content-render/unified/processor.js'
 // import { createReportIssue, linkReports } from '#src/workflows/issue-report.js'
@@ -98,7 +98,7 @@ if (import.meta.url.endsWith(process.argv[1])) {
     EXTERNAL_SERVER_ERRORS_AS_WARNINGS,
   } = process.env
 
-  const octokit = github()
+  // const octokit = github()
 
   // Parse changed files JSON string
   let files
